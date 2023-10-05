@@ -1,0 +1,118 @@
+{
+  "vocab-file": "/cognitive_comp/common_data/Huggingface-Models/llama_7b/tokenizer.model",
+  "save": "./workspace/llama/checkpoints_7b_code",
+  "load": "/cognitive_comp/common_checkpoint/llama/ckpt_ori_7b_pp2mp1/",
+  "megatron_config_path": "./workspace/llama/7b_code_megatron_config.json",
+
+  "train-data-paths": ["/cognitive_comp/common_data/chatGPTdata_v2.1/pile/pile_llama_text_document","/cognitive_comp/common_data/chatGPTdata_v2.1/wudao180/wudao180_llama_text_document","/cognitive_comp/common_data/chatGPTdata_v2.1/zh_unsup/zhunsup_llama_content_document","/cognitive_comp/common_data/chatGPTdata_v2.1/wiki/wiki-en-zh_llama_text_document","/cognitive_comp/common_data/chatGPTdata_v2.1/code_spm/code_data_concat_content_document","/cognitive_comp/common_data/chatGPTdata_v2.1/academic/academic-ab_llama_body_document"],
+  "test-data-paths": ["/cognitive_comp/common_data/chatGPTdata_v2.1/test/code_llama_concat_content_document"],
+  "valid-data-paths": ["/cognitive_comp/common_data/chatGPTdata_v2.1/val/code_llama_concat_content_document"],
+  "train-data-weights": [1533151, 1533151, 1533151, 3303255, 84922753, 1533151],
+  "test-data-weights": [1.],
+  "valid-data-weights": [1.],
+  "train-indexmap-data-paths": ["/cognitive_comp/ganruyi/gpt-neox/workspace/llama/code_data/pile_llama_text_document","/cognitive_comp/ganruyi/gpt-neox/workspace/llama/code_data/wudao180_llama_text_document","/cognitive_comp/ganruyi/gpt-neox/workspace/llama/code_data/zhunsup_llama_content_document","/cognitive_comp/ganruyi/gpt-neox/workspace/llama/code_data/wiki-en-zh_llama_text_document","/cognitive_comp/ganruyi/gpt-neox/workspace/llama/code_data/code_data_concat_content_document","/cognitive_comp/ganruyi/gpt-neox/workspace/llama/code_data/academic-ab_llama_body_document"],
+  "test-indexmap-data-paths": ["/cognitive_comp/ganruyi/gpt-neox/workspace/llama/code_data/code_test"],
+  "valid-indexmap-data-paths": ["/cognitive_comp/ganruyi/gpt-neox/workspace/llama/code_data/code_val"],
+
+  "use_wandb": true,
+  "wandb_project": "llama7b_code_20230412",
+  "wandb_group": "llama7b_code_norm",
+  "launcher": "slurm",
+  "deepspeed_slurm": false,
+  "global_num_gpus": 192,
+  "finetune": true,
+  "load_module_only": true,
+  "attention_config": [[["flash"], "all"]],
+  "reset-attention-mask": true,
+  "reset_position_ids": true,
+  "eod_mask_loss": true,
+
+  "pipe-parallel-size": 2,
+  "model-parallel-size": 1,
+  "make_vocab_size_divisible_by": 1, # neox 128
+
+  "num-layers": 32,
+  "hidden-size": 4096,
+  "num-attention-heads": 32,
+  "seq-length": 2048,
+  "max-position-embeddings": 2048,
+  "norm": "llamarmsnorm", # neox layernorm
+  "rms_norm_epsilon": 1.0e-6,
+  "pos-emb": "rotary",
+  "rotary_pct": 1,
+  "no-weight-tying": true,
+  "gpt_j_residual": false,
+  "output_layer_parallelism": "column",
+  "scaled-upper-triang-masked-softmax-fusion": true,
+  "bias-gelu-fusion": false,
+  "use_bias_in_norms": false,
+  "use_bias_in_attn_linear": false,
+  "mlp_type": "llama",
+  "activation": "silu",
+  "init_method": "small_init",
+  "output_layer_init_method": "wang_init",
+
+  "optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 3.0e-5,
+      "betas": [0.9, 0.95],
+      "eps": 1.0e-8
+      }
+      },
+
+  "min_lr": 3.0e-5,
+  "zero_optimization": {
+    "stage": 1,
+    "allgather_partitions": true,
+    "allgather_bucket_size": 500000000,
+    "overlap_comm": true,
+    "reduce_scatter": true,
+    "reduce_bucket_size": 500000000,
+    "contiguous_gradients": true
+  },
+  "train_micro_batch_size_per_gpu": 4,
+  "gradient_accumulation_steps": 4,
+  "data-impl": "mmap",
+  "split": "995,4,1",
+
+  "checkpoint-activations": true,
+  "checkpoint-num-layers": 1,
+  "partition-activations": false,
+  "synchronize-each-layer": true,
+
+  "gradient_clipping": 1.0,
+  "weight-decay": 0.1,
+  "hidden-dropout": 0,
+  "attention-dropout": 0,
+
+  "fp16": {
+    "fp16": true,
+    "enabled": true,
+    "loss_scale": 0,
+    "loss_scale_window": 1000,
+    "initial_scale_power": 12,
+    "hysteresis": 2,
+    "min_loss_scale": 1
+    },
+
+  "train-iters": 61430,
+  "lr-decay-iters": 61430,
+
+  "distributed-backend": "nccl",
+  "lr-decay-style": "cosine",
+  "warmup": 0.04,
+  "checkpoint-factor": 1000,
+  "eval-interval": 1000,
+  "eval-iters": 20,
+
+  "log-interval": 2,
+  "steps_per_print": 2,
+  "wall_clock_breakdown": false,
+
+
+  "tokenizer_type": "LlamaTokenizer",
+  "tensorboard-dir": "./workspace/llama/tensorboard_7b_code",
+  "log-dir": "./workspace/llama/logs_7b_code",
+  "checkpoint_validation_with_forward_pass": false
+}

@@ -1,0 +1,103 @@
+{
+  "vocab-file": "/cognitive_comp/common_data/Huggingface-Models/llama_7b/tokenizer.model",
+  "save": "./workspace/llama/checkpoints_7b_continue",
+  "load": "./workspace/llama/checkpoints_7b",
+
+  "data-path": "./workspace/llama/dataset_20230314_text_document",
+  "use_wandb": true,
+  "wandb_project": "llama_test",
+  "wandb_group": "7b_test",
+  "launcher": "slurm",
+  "deepspeed_slurm": false,
+  "global_num_gpus": 8,
+  "finetune": true,
+  "attention_config": [[["flash"], "all"]],
+
+  "pipe-parallel-size": 2,
+  "model-parallel-size": 1,
+  "make_vocab_size_divisible_by": 1, # neox 128
+
+  "num-layers": 32,
+  "hidden-size": 4096,
+  "num-attention-heads": 32,
+  "seq-length": 2048,
+  "max-position-embeddings": 2048,
+  "norm": "rmsnorm", # neox layernorm
+  "rms_norm_epsilon": 1.0e-6,
+  "pos-emb": "rotary",
+  "rotary_pct": 1,
+  "no-weight-tying": true,
+  "gpt_j_residual": false,
+  "output_layer_parallelism": "column",
+  "scaled-upper-triang-masked-softmax-fusion": true,
+  "bias-gelu-fusion": false,
+  "use_bias_in_norms": false,
+  "use_bias_in_attn_linear": false,
+  "mlp_type": "llama",
+  "activation": "silu",
+  "init_method": "small_init",
+  "output_layer_init_method": "wang_init",
+
+  "optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 4.0e-5,
+      "betas": [0.9, 0.95],
+      "eps": 1.0e-8
+      }
+      },
+
+  "min_lr": 3.0e-5,
+  "zero_optimization": {
+    "stage": 1,
+    "allgather_partitions": true,
+    "allgather_bucket_size": 500000000,
+    "overlap_comm": true,
+    "reduce_scatter": true,
+    "reduce_bucket_size": 500000000,
+    "contiguous_gradients": true
+  },
+  "train_micro_batch_size_per_gpu": 1,
+  "gradient_accumulation_steps": 32,
+  "data-impl": "mmap",
+  "split": "995,4,1",
+
+  "checkpoint-activations": true,
+  "checkpoint-num-layers": 1,
+  "partition-activations": false,
+  "synchronize-each-layer": true,
+
+  "gradient_clipping": 1.0,
+  "weight-decay": 0.1,
+  "hidden-dropout": 0,
+  "attention-dropout": 0,
+
+  "fp16": {
+    "fp16": true,
+    "enabled": true,
+    "loss_scale": 0,
+    "loss_scale_window": 1000,
+    "initial_scale_power": 12,
+    "hysteresis": 2,
+    "min_loss_scale": 1
+    },
+
+  "train-iters": 12800,
+  "lr-decay-iters": 12800,
+
+  "distributed-backend": "nccl",
+  "lr-decay-style": "cosine",
+  "warmup": 0.01,
+  "checkpoint-factor": 2000,
+  "eval-interval": 2000,
+  "eval-iters": 100,
+
+  "log-interval": 2,
+  "steps_per_print": 2,
+  "wall_clock_breakdown": false,
+
+  "tokenizer_type": "LlamaTokenizer",
+  "tensorboard-dir": "./workspace/llama/tensorboard_7b",
+  "log-dir": "./workspace/llama/logs_7b",
+  "checkpoint_validation_with_forward_pass": false
+}

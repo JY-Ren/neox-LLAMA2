@@ -1,0 +1,225 @@
+{
+  "vocab-file": "/shared_space/agpt/models/llama2/hf/70B",
+  "save": "/shared_space/agpt/experiments/0926/checkpoints",
+  "load": "/shared_space/agpt/experiments/0808/checkpoints", # no extra tokens
+  "megatron_config_path": "/platform_tech/jyren/pretrainpipeline/ren-workspace/0926/config_megatron/megatron_config.json",
+
+  "train-data-paths": [
+    "/shared_space/agpt/experiments/0808/data/authors_text_tail_document",
+    "/shared_space/agpt/experiments/0808/data/cc_en_text_document",
+    "/shared_space/agpt/experiments/0808/data/cc_en_text_tail_document",
+    "/shared_space/agpt/experiments/0808/data/cn_data_text_document",
+    "/shared_space/agpt/experiments/0808/data/cn_data_text_tail_document",
+    "/shared_space/agpt/experiments/0808/data/latex_text_document",
+    "/shared_space/agpt/experiments/0808/data/latex_text_tail_document",
+    "/shared_space/agpt/experiments/0808/data/pdf_bio_text_document",
+    "/shared_space/agpt/experiments/0808/data/pdf_bio_text_tail_document",
+    "/shared_space/agpt/experiments/0808/data/pdf_cs_text_document",
+    "/shared_space/agpt/experiments/0808/data/pdf_cs_text_tail_document",
+    "/shared_space/agpt/experiments/0808/data/pdf_med_text_document",
+    "/shared_space/agpt/experiments/0808/data/pdf_med_text_tail_document",
+    "/shared_space/agpt/experiments/0808/data/prof_li_text_document",
+    "/shared_space/agpt/experiments/0808/data/prof_li_text_tail_document",
+    "/shared_space/agpt/experiments/0808/data/prof_luo_text_document",
+    "/shared_space/agpt/experiments/0808/data/prof_luo_text_tail_document",
+    "/shared_space/agpt/experiments/0808/data/s2_text_document",
+    "/shared_space/agpt/experiments/0808/data/s2_text_tail_document",
+    ],
+  "test-data-paths": [
+    "/shared_space/agpt/experiments/0712/data/academic_cs_pdf_author_0714_val_text_document",
+    ],
+  "valid-data-paths": [
+    "/shared_space/agpt/experiments/0712/data/academic_cs_pdf_author_0714_val_text_document",
+    ],
+
+  "train-data-weights": [
+      21118556, 
+      1890426880,
+      5261477599,
+      4016177152,
+      8746544665,
+      5897609216,
+      877329485,
+      4357517312,
+      835848124,
+      12765122560,
+      3643188406,
+      4720377856,
+      1731667591,
+      50024448,
+      6575748,
+      119255040,
+      25544187,
+      88899584,
+      22055187644,
+    ],  # sum  77109892053
+
+  "test-data-weights": [1.],
+  "valid-data-weights": [1.],
+  "valid_by_datasets": true,
+
+  "train-indexmap-data-paths": [
+    "/shared_space/agpt/experiments/0926/data/indexmap/authors_text_tail_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/cc_en_text_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/cc_en_text_tail_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/cn_data_text_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/cn_data_text_tail_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/latex_text_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/latex_text_tail_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/pdf_bio_text_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/pdf_bio_text_tail_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/pdf_cs_text_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/pdf_cs_text_tail_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/pdf_med_text_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/pdf_med_text_tail_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/prof_li_text_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/prof_li_text_tail_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/prof_luo_text_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/prof_luo_text_tail_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/s2_text_document",
+    "/shared_space/agpt/experiments/0926/data/indexmap/s2_text_tail_document",
+    ],
+  "test-indexmap-data-paths": [
+    "/shared_space/agpt/experiments/0712/data/indexmap/test_text_document",
+    ],
+  "valid-indexmap-data-paths": [
+    "/shared_space/agpt/experiments/0712/data/indexmap/val_text_document",
+    ],
+
+  "use_wandb": true,
+  "wandb_project": "llama2_70b_pretrain2",
+  "wandb_group": "70b",
+  "wandb_team": "academicgpt",
+  "launcher": "slurm",
+  "deepspeed_slurm": false,
+  "global_num_gpus": 160,
+
+  "multi_query": true,
+
+  "load_module_only": true, # 重启为false
+  "finetune": true, # 重启为false, false加载optimizer
+  "attention_config": [[["flash"], "all"]],
+
+  "pipe-parallel-size": 8,
+  "model-parallel-size": 4,
+  "make_vocab_size_divisible_by": 1, 
+
+  # "dynamic_rotary": true,  # 动态插值扩窗口
+  # "origin-position-embeedings": 4096, # llama2
+  # "ntk": 2,
+
+  "reset_attention_mask": false, # 如果flash，则false； flash_triton，可以true
+  "reset_position_ids": false, # 如果flash，则false； flash_triton，可以true
+  "eod_mask_loss": false,  # ?? 应该false?
+
+  "num-layers": 80,
+  "hidden-size": 8192,
+  "num-attention-heads": 64,
+  
+  "num_attention_heads_kv": 8, 
+  "llama_mlp_multiple_of": 4096,
+  "ffn_dim_multiplier": 1.3,
+
+  "seq-length": 4096,
+  "max-position-embeddings": 4096,
+  
+  "norm": "apexrmsnorm", # "apexrmsnorm", "llamarmsnorm"
+  "rms_norm_epsilon": 1.0e-5,
+  
+  "pos-emb": "rotary",
+  "rotary_pct": 1,
+  "no-weight-tying": true,
+  "gpt_j_residual": false,
+  "output_layer_parallelism": "column",
+  "scaled-upper-triang-masked-softmax-fusion": True, # use fused ops of [scale, upper triang mask, softmax]
+  "bias-gelu-fusion": false,
+  "use_bias_in_norms": false,
+  "use_bias_in_attn_linear": false,
+  "mlp_type": "llama",
+  "activation": "silu",
+  "init_method": "small_init",
+  "output_layer_init_method": "wang_init",
+
+  "optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 1.5e-5,
+      "betas": [0.9, 0.95],
+      "eps": 1.0e-8
+    }
+  },
+
+  "min_lr": 8.e-6, 
+  "zero_optimization": {
+    "stage": 1,
+    "allgather_partitions": true,
+    "allgather_bucket_size": 500000000,
+    "overlap_comm": true,
+    "reduce_scatter": true,
+    "reduce_bucket_size": 500000000,
+    "contiguous_gradients": true
+  },
+  "train_micro_batch_size_per_gpu": 1,
+  "gradient_accumulation_steps": 64,
+  "data-impl": "mmap",
+  "split": "995,4,1",
+
+  "checkpoint-activations": true,
+  "checkpoint-num-layers": 1,
+  "partition-activations": false,
+  "synchronize-each-layer": true,
+
+  "gradient_clipping": 0.4, # from 1.0
+  "weight-decay": 0.1,
+  "hidden-dropout": 0,
+  "attention-dropout": 0,
+
+  # "fp16": {
+  #   "fp16": true,
+  #   "enabled": true,
+  #   "loss_scale": 0,
+  #   "loss_scale_window": 1000,
+  #   "initial_scale_power": 12,
+  #   "hysteresis": 2,
+  #   "min_loss_scale": 1
+  # },
+
+  "precision": "bfloat16",
+  "bf16": {
+    "enabled": true
+  },
+  "fp32_allreduce": true, # without a patch to torch, bf16 models have to do the allreduce in fp32
+  "data_types": { "grad_accum_dtype": "fp32" },
+
+  "fp16": {
+    "enabled": false,
+    "type": "bfloat16", # set bf16 as precision
+    "loss_scale": 0,
+    "loss_scale_window": 1000,
+    "hysteresis": 2,
+    "min_loss_scale": 1
+  },
+
+  "train-iters": 58831, # 77109892053/(4096*1*64*8*20/8/4)=58,831
+  "lr-decay-iters": 58831,
+
+  "distributed-backend": "nccl",
+  "lr-decay-style": "cosine",
+  "warmup": 0.05,  # from 0.01
+  "checkpoint-factor": 500,
+  "eval-interval": 10000000, # 不进行eval
+  "eval-iters": 100,
+
+  "log_grad_info": true,
+  "log_param_info": true,
+  "log_param_norm": true,
+
+  "log-interval": 1,
+  "steps_per_print": 1,
+  "wall_clock_breakdown": false, # ?
+
+  "tokenizer_type": "HFLlamaTokenizer",
+  "tensorboard-dir": "/shared_space/agpt/experiments/0926/logs/tensorboard_65b",
+  "log-dir": "/shared_space/agpt/experiments/0926/logs/logs_70b/",
+  "checkpoint_validation_with_forward_pass": false
+}

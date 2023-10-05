@@ -1,0 +1,195 @@
+{
+  "vocab-file": "/platform_tech/xiajun/PLMs/llama-65b-hf/",
+  "save": "/shared_space/agpt/experiments/0922_1B_from_scratch/checkpoints",
+  "load": "/shared_space/agpt/experiments/0922_1B_from_scratch/checkpoints", # no extra tokens
+  "megatron_config_path": "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/config_megatron/megatron_config.json",
+
+  "train-data-paths": [
+    "/platform_tech/sf.w/data/chinese_mmap/parallel_v1_text_document",
+    "/platform_tech/sf.w/data/chinese_mmap/wiki_en_text_document",
+    "/platform_tech/sf.w/data/chinese_mmap/baike_text_document",
+    "/platform_tech/sf.w/data/chinese_mmap/shuji_text_document",
+    "/platform_tech/sf.w/data/chinese_mmap/cc_cn_text_document",
+    "/platform_tech/sf.w/data/tiny_mmap/tiny_webtext_text_document",
+    "/platform_tech/sf.w/data/tiny_mmap/tiny_codes_text_document",
+    "/platform_tech/sf.w/data/refinedweb_mmap/train_00_content_document",
+    "/platform_tech/sf.w/data/refinedweb_mmap/train_01_content_document",
+    "/platform_tech/sf.w/data/refinedweb_mmap/train_02_content_document",
+    "/platform_tech/sf.w/data/refinedweb_mmap/train_03_content_document",
+    "/platform_tech/sf.w/data/refinedweb_mmap/train_04_content_document",
+    "/platform_tech/sf.w/data/refinedweb_mmap/train_05_content_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/codeparrot/train_content_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/latex/train_xml_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/scihub/train_text_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/thesis/train_text_document",
+    ],
+  "test-data-paths": [
+    "/shared_space/agpt/experiments/0712/data/academic_cs_pdf_author_0714_val_text_document",
+    ],
+  "valid-data-paths": [
+    "/shared_space/agpt/experiments/0712/data/academic_cs_pdf_author_0714_val_text_document",
+    ],
+
+  "train-data-weights": [2058015056, 19823997860, 9119299544, 1168203680, 18845398148, 5111370868, 5654783508, 120918011149, 120062507240, 119984257694,119727396951, 120294856832, 64077763449, 104702861790, 85520110557, 136838268081, 27954446580], 
+  # 1,081,861,548,987 [en:code:cn=1:6:4], paper: 3倍。 1.08TB
+
+  "test-data-weights": [1.],
+  "valid-data-weights": [1.],
+  "valid_by_datasets": true,
+
+  "train-indexmap-data-paths": [
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/parallel_v1_text_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/wiki_en_text_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/baike_text_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/shuji_text_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/cc_cn_text_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/tiny_webtext_text_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/tiny_codes_text_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/train_00_content_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/train_01_content_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/train_02_content_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/train_03_content_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/train_04_content_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/train_05_content_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/codeparrot_content_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/latex_xml_tail_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/scihub_text_document",
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/thesis_text_tail_document",
+    ],
+  "test-indexmap-data-paths": [
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/test_text_document",
+    ],
+  "valid-indexmap-data-paths": [
+    "/platform_tech/xiajun/pretrainpipeline/xj-workspace/0921/data/tmp/val_text_document",
+    ],
+
+  "use_wandb": true,
+  "wandb_project": "llama_1b_train_scratch_0922",
+  "wandb_group": "train_scratch",
+  "wandb_team": "academicgpt",
+  "launcher": "slurm",
+  "deepspeed_slurm": false,
+  "global_num_gpus": 128,
+
+  "load_module_only": true, # 重启为false
+  "finetune": true, # 重启为false, false加载optimizer
+  "attention_config": [[["flash_triton"], "all"]],
+
+  "pipe-parallel-size": 1,
+  "model-parallel-size": 1,
+  "make_vocab_size_divisible_by": 1, 
+
+  "dynamic_rotary": false,  # 动态插值扩窗口
+  "origin-position-embeedings": 16384,
+  "ntk": 2,
+
+  "reset_attention_mask": true, # 如果flash，则false； flash_triton，可以true
+  "reset_position_ids": true, # 如果flash，则false； flash_triton，可以true
+  "eod_mask_loss": false,
+
+  "num_attention_heads_kv": 32,
+
+  "num-layers": 24,
+  "hidden-size": 2048,
+  "num-attention-heads": 32,
+  "seq-length": 16384,
+  "max-position-embeddings": 16384,
+  "norm": "apexrmsnorm", # "apexrmsnorm"
+  "rms_norm_epsilon": 1.0e-6,
+  "pos-emb": "rotary",
+  "rotary_pct": 1,
+  "no-weight-tying": true,
+  "gpt_j_residual": false,
+  "output_layer_parallelism": "column",
+  "scaled-upper-triang-masked-softmax-fusion": True, # use fused ops of [scale, upper triang mask, softmax]
+  "bias-gelu-fusion": false,
+  "use_bias_in_norms": false,
+  "use_bias_in_attn_linear": false,
+  "mlp_type": "llama",
+  "activation": "silu",
+  "init_method": "small_init",
+  "output_layer_init_method": "wang_init",
+
+  "optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 4.0e-4,
+      "betas": [0.9, 0.95],
+      "eps": 1.0e-8
+    }
+  },
+
+  "min_lr": 4.0e-5, 
+  "zero_optimization": {
+    "stage": 1,
+    "allgather_partitions": true,
+    "allgather_bucket_size": 500000000,
+    "overlap_comm": true,
+    "reduce_scatter": true,
+    "reduce_bucket_size": 500000000,
+    "contiguous_gradients": true
+  },
+  "train_micro_batch_size_per_gpu": 1,
+  "gradient_accumulation_steps": 2,
+  "data-impl": "mmap",
+  "split": "995,4,1",
+
+  "train-iters": 258000, # 1081861548987/(128/1/1*1*2*16384)=257935
+  "lr-decay-iters": 258000,
+
+  "checkpoint-activations": true,
+  "checkpoint-num-layers": 1,
+  "partition-activations": false,
+  "synchronize-each-layer": true,
+
+  "gradient_clipping": 1, # from 1.0
+  "weight-decay": 0.1, # from 0.1
+  "hidden-dropout": 0,
+  "attention-dropout": 0,
+
+  # "fp16": {
+  #   "fp16": true,
+  #   "enabled": true,
+  #   "loss_scale": 0,
+  #   "loss_scale_window": 1000,
+  #   "initial_scale_power": 12,
+  #   "hysteresis": 2,
+  #   "min_loss_scale": 1
+  # },
+
+  "precision": "bfloat16",
+  "bf16": {
+    "enabled": true
+  },
+  "fp32_allreduce": true, # without a patch to torch, bf16 models have to do the allreduce in fp32
+  "data_types": { "grad_accum_dtype": "fp32" },
+
+  "fp16": {
+    "enabled": false,
+    "type": "bfloat16", # set bf16 as precision
+    "loss_scale": 0,
+    "loss_scale_window": 1000,
+    "hysteresis": 2,
+    "min_loss_scale": 1
+  },
+
+  "distributed-backend": "nccl",
+  "lr-decay-style": "cosine",
+  "warmup": 0.01,  # from 0.01
+  "checkpoint-factor": 1000,
+  "eval-interval": 100000, # 不进行测试
+  "eval-iters": 100,
+
+  "log_grad_info": true,
+  "log_param_info": true,
+  "log_param_norm": true,
+
+  "log-interval": 1,
+  "steps_per_print": 1,
+  "wall_clock_breakdown": false, # ?
+
+  "tokenizer_type": "HFLlamaTokenizer",
+  "tensorboard-dir": "/shared_space/agpt/experiments/0922_1B_from_scratch/logs/tensorboard",
+  "log-dir": "/shared_space/agpt/experiments/0922_1B_from_scratch/logs/logs",
+  "checkpoint_validation_with_forward_pass": false
+}

@@ -1,0 +1,115 @@
+{
+  "vocab-file": "/cognitive_comp/common_data/Huggingface-Models/llama_7b/",
+  "save": "/cognitive_comp/yangqi/checkpoints/llama/llama_65B_continue_pretrained/",
+  "load": "/cognitive_comp/yangqi/checkpoints/llama/llama_65B_continue_pretrained/ckpt_33b_ori_pp8mp2/",
+  "megatron_config_path": "/cognitive_comp/yangqi/project/gpt-neox/workspace/llama/config_megatron/33b_megatron_config.json",
+
+  "train-data-paths": ["/cognitive_comp/common_data/chatGPTdata_v2.1/arxiv/data_text_document"],
+  "test-data-paths": ["/cognitive_comp/common_data/chatGPTdata_v2.1/test/academic_llama_body_document"],
+  "valid-data-paths": ["/cognitive_comp/common_data/chatGPTdata_v2.1/val/academic_llama_body_document"],
+  "train-data-weights": [1.],
+  "test-data-weights": [1.],
+  "valid-data-weights": [1.],
+  "train-indexmap-data-paths": ["/cognitive_comp/yangqi/data/neox_test/arxiv/data_text_document"],
+  "test-indexmap-data-paths": ["/cognitive_comp/yangqi/data/neox_test/test/data_text_document"],
+  "valid-indexmap-data-paths": ["/cognitive_comp/yangqi/data/neox_test/val/data_text_document"],
+  "use_wandb": true,
+  "wandb_project": "llama_test",
+  "wandb_group": "33b_test",
+  "wandb_team": "fengshenbang",
+  "launcher": "slurm",
+  "deepspeed_slurm": false,
+  "global_num_gpus": 160,
+
+  "load_module_only": true,
+  "finetune": true,
+  "attention_config": [[["flash"], "all"]],
+
+  "pipe-parallel-size": 8,
+  "model-parallel-size": 2,
+  "make_vocab_size_divisible_by": 1, # neox 128
+
+  "num-layers": 60,
+  "hidden-size": 6656,
+  "num-attention-heads": 52,
+  "seq-length": 8192,
+  "max-position-embeddings": 8192,
+  "norm": "llamarmsnorm", # neox layernorm
+  "rms_norm_epsilon": 1.0e-6,
+  "pos-emb": "rotary",
+  "rotary_pct": 1,
+  "no-weight-tying": true,
+  "gpt_j_residual": false,
+  "output_layer_parallelism": "column",
+  "scaled-upper-triang-masked-softmax-fusion": true, # use fused ops of [scale, upper triang mask, softmax]
+  "bias-gelu-fusion": false,
+  "use_bias_in_norms": false,
+  "use_bias_in_attn_linear": false,
+  "mlp_type": "llama",
+  "activation": "silu",
+  "init_method": "small_init",
+  "output_layer_init_method": "wang_init",
+
+  "optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 2.0e-5,
+      "betas": [0.9, 0.95],
+      "eps": 1.0e-8
+      }
+      },
+
+  "min_lr": 1.5e-5,
+  "zero_optimization": {
+    "stage": 1,
+    "allgather_partitions": true,
+    "allgather_bucket_size": 500000000,
+    "overlap_comm": true,
+    "reduce_scatter": true,
+    "reduce_bucket_size": 500000000,
+    "contiguous_gradients": true
+  },
+  "train_micro_batch_size_per_gpu": 1,
+  "gradient_accumulation_steps": 16,
+  "data-impl": "mmap",
+  "split": "995,4,1",
+
+  "checkpoint-activations": true,
+  "checkpoint-num-layers": 1,
+  "partition-activations": false,
+  "synchronize-each-layer": true,
+
+  "gradient_clipping": 1.0,
+  "weight-decay": 0.1,
+  "hidden-dropout": 0,
+  "attention-dropout": 0,
+
+  "fp16": {
+    "fp16": true,
+    "enabled": true,
+    "loss_scale": 0,
+    "loss_scale_window": 1000,
+    "initial_scale_power": 12,
+    "hysteresis": 2,
+    "min_loss_scale": 1
+    },
+
+  "train-iters": 12800,
+  "lr-decay-iters": 12800,
+
+  "distributed-backend": "nccl",
+  "lr-decay-style": "cosine",
+  "warmup": 0.01,
+  "checkpoint-factor": 2000,
+  "eval-interval": 2000,
+  "eval-iters": 100,
+
+  "log-interval": 2,
+  "steps_per_print": 2,
+  "wall_clock_breakdown": false, # ?
+
+  "tokenizer_type": "HFLlamaTokenizer",
+  "tensorboard-dir": "tensorboard_65b",
+  "log-dir": "logs_65b",
+  "checkpoint_validation_with_forward_pass": false
+}
